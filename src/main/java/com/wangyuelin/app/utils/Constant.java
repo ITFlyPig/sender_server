@@ -33,6 +33,7 @@ public class Constant {
     public interface Code {
         int RESP_SUCCESS = 0;//网络请求成功
         int RESP_ERROR = -1;//网络请求失败
+        int RESP_REGISTERED = 10001;//手机号已被注册
     }
 
     public interface Message {

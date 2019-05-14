@@ -1,34 +1,40 @@
 package com.wangyuelin.app.bean;
 
-import javax.persistence.Table;
-
-@Table(name = "stu")
 public class User {
+    private long id;
     private String name;
-    private int age;
-    private int id;
+    private String password;
+    private String phone;
+
+    public long getId() {
+        return id;
+    }
 
     public String getName() {
         return name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public int getAge() {
-        return age;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }
