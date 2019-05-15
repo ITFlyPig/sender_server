@@ -45,7 +45,38 @@ public class UserController {
 
     @RequestMapping("/login")
     @ResponseBody
-    public Resp login(@Param("password") String password, @Param("userName") String userName) {
+    public Resp login(@Param("password") String password, @Param("phone") String phone) {
+        Resp resp = null;
+        String errorMsg = null;
+        int respCode = Constant.Code.RESP_ERROR;
+        if (TextUtil.isEmpty(phone)) {
+            errorMsg = "手机号不能为空";
+        }
+        if (TextUtil.isEmpty(password)) {
+            errorMsg = "密码不能为空";
+        }
+        if (!TextUtil.isEmpty(errorMsg)) {
+            resp = new Resp(respCode, errorMsg, "");
+            return resp;
+        }
+
+
+        User user = iUser.getUser(phone);
+        //账号未注册
+        if (user == null) {
+            errorMsg = "账号未注册";
+            respCode = Constant.Code.RESP_UNREGISTER;
+            return new Resp(respCode, errorMsg, "");
+        } else {
+            if (!TextUtil.equals(user.getPassword(), password)) {
+                errorMsg = "密码错误";
+                respCode = Constant.Code.RESP_ERROR;
+                return new Resp(respCode, errorMsg, "");
+            }
+        }
+
+        //生成Token返回
+
         return new Resp(Constant.Code.RESP_SUCCESS, Constant.MSG.SUCCESS, "登陆成功");
     }
 
