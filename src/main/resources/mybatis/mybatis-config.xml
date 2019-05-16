@@ -37,5 +37,6 @@
         <typeAlias alias="LinkedList" type="java.util.LinkedList" />
         <typeAlias alias="String" type="java.lang.String"/>
         <typeAlias alias="User"  type="com.wangyuelin.app.bean.User"/>
+        <typeAlias alias="Task"  type="com.wangyuelin.app.bean.SendTaskBean"/>
     </typeAliases>
 </configuration>

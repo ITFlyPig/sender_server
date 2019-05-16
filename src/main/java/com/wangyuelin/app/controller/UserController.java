@@ -6,6 +6,7 @@ import com.wangyuelin.app.bean.User;
 import com.wangyuelin.app.message.CodeCache;
 import com.wangyuelin.app.message.MessageSend;
 import com.wangyuelin.app.service.itf.IUser;
+import com.wangyuelin.app.token.TokenUtil;
 import com.wangyuelin.app.utils.Constant;
 import com.wangyuelin.app.utils.TextUtil;
 import org.apache.ibatis.annotations.Param;
@@ -15,6 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("user")
@@ -56,7 +61,7 @@ public class UserController {
             errorMsg = "密码不能为空";
         }
         if (!TextUtil.isEmpty(errorMsg)) {
-            resp = new Resp(respCode, errorMsg, "");
+            resp = new Resp(respCode, errorMsg, getMap("tip", errorMsg));
             return resp;
         }
 
@@ -66,32 +71,43 @@ public class UserController {
         if (user == null) {
             errorMsg = "账号未注册";
             respCode = Constant.Code.RESP_UNREGISTER;
-            return new Resp(respCode, errorMsg, "");
+            return new Resp(respCode, errorMsg, getMap("tip", errorMsg));
         } else {
             if (!TextUtil.equals(user.getPassword(), password)) {
                 errorMsg = "密码错误";
                 respCode = Constant.Code.RESP_ERROR;
-                return new Resp(respCode, errorMsg, "");
+
+                return new Resp(respCode, errorMsg, getMap("tip", errorMsg));
             }
         }
 
         //生成Token返回
 
-        return new Resp(Constant.Code.RESP_SUCCESS, Constant.MSG.SUCCESS, "登陆成功");
+        Map<String, String> map = new HashMap<String, String>();
+        String token = TokenUtil.getToken(user);
+        map.put("token", token);
+        map.put("tip", "登陆成功");
+        map.put("loginSuccess", String.valueOf(1));
+        return new Resp(Constant.Code.RESP_SUCCESS, "登陆成功", map);
     }
 
     @RequestMapping("/send")
     @ResponseBody
     public Resp sendCode(@Param("phone") String phone) {
 
+        /*
+
         Code code = CodeCache.getCode(phone);
         boolean success = MessageSend.send(phone, MessageSend.getMessage(code.getCode()));
 
+        */
+
+        boolean success = true;
         String msg = "";
         int respCode = -1;
         if (success) {
             msg = "短信已发送到您手机";
-            respCode = Constant.Code.RESP_SUCCESS;
+            respCode = Constant.RespCode.SUCCESS;
 
 
         } else {
@@ -99,7 +115,7 @@ public class UserController {
             respCode = Constant.Code.RESP_ERROR;
         }
 
-        return new Resp(respCode, msg, "");
+        return new Resp(respCode, msg, null);
     }
 
 
@@ -133,6 +149,7 @@ public class UserController {
 //
 //        }
 
+        /*
 
         //先查询手机号是否已被注册
         User user = iUser.getUser(phone);
@@ -150,9 +167,17 @@ public class UserController {
 
         iUser.save(saveUser);
 
-        resp = new Resp(Constant.Code.RESP_SUCCESS, "注册成功", "");
+        */
+
+        resp = new Resp(Constant.RespCode.SUCCESS, "注册成功", "");
         return resp;
 
+    }
+
+    private Map<String, String> getMap(String key, String value){
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put(key, value);
+        return map;
     }
 
 }

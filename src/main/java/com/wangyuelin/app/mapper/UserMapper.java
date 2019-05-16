@@ -11,4 +11,6 @@ public interface UserMapper {
     void save(User user);//保存用户信息
 
     User getUserByName(@Param("name") String userName);//获取用户的信息，用于登陆校验
+
+    User getUserById(@Param("Id") String Id);
 }

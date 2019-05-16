@@ -10,5 +10,7 @@ public interface IUser {
 
     User getUserByName(String userName);//获取用户的信息，用于登陆校验
 
+    User getUserById(String id);
+
 
 }

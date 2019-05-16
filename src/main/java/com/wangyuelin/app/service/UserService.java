@@ -27,4 +27,9 @@ public class UserService implements IUser {
     public User getUserByName(String userName) {
         return userMapper.getUserByName(userName);
     }
+
+    @Override
+    public User getUserById(String id) {
+        return userMapper.getUserById(id);
+    }
 }
