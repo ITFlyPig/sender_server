@@ -95,14 +95,10 @@ public class UserController {
     @ResponseBody
     public Resp sendCode(@Param("phone") String phone) {
 
-        /*
 
         Code code = CodeCache.getCode(phone);
         boolean success = MessageSend.send(phone, MessageSend.getMessage(code.getCode()));
 
-        */
-
-        boolean success = true;
         String msg = "";
         int respCode = -1;
         if (success) {
@@ -138,24 +134,23 @@ public class UserController {
         }
 
         if (!TextUtil.isEmpty(errorMsg)) {
-            resp = new Resp(Constant.Code.RESP_ERROR, errorMsg, "");
+            resp = new Resp(Constant.Code.RESP_ERROR, errorMsg, null);
             return resp;
         }
         //检查验证码是否正确
-//        if (!CodeCache.validate(phone, code)) {
-//            errorMsg = "输入验证码不正确";
-//            resp = new Resp(Constant.Code.RESP_ERROR, errorMsg, "");
-//            return resp;
-//
-//        }
+        if (!CodeCache.validate(phone, code)) {
+            errorMsg = "输入验证码不正确";
+            resp = new Resp(Constant.Code.RESP_ERROR, errorMsg, null);
+            return resp;
 
-        /*
+        }
+
 
         //先查询手机号是否已被注册
         User user = iUser.getUser(phone);
         if (user != null) {
             errorMsg = "手机号已被注册";
-            resp = new Resp(Constant.Code.RESP_REGISTERED, errorMsg, "");
+            resp = new Resp(Constant.Code.RESP_REGISTERED, errorMsg, null);
             return resp;
         }
 
@@ -167,9 +162,8 @@ public class UserController {
 
         iUser.save(saveUser);
 
-        */
 
-        resp = new Resp(Constant.RespCode.SUCCESS, "注册成功", "");
+        resp = new Resp(Constant.RespCode.SUCCESS, "注册成功", null);
         return resp;
 
     }

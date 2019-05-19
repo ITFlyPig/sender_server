@@ -74,7 +74,7 @@ public class TaskController {
 
     @RequestMapping("/updateTask")
     @ResponseBody
-    public Resp updateTask(long id, Integer status, String selTime, String selLocation) {
+    public Resp updateTask(Long id, Integer status, String selTime, String selLocation) {
         SendTaskBean taskBean = iTask.getTaskById(id);
         if (taskBean == null) {
             return new Resp(Constant.RespCode.ERROR, "您要更新的任务不存在", null);
